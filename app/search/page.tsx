@@ -1,15 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { FlightCard } from '@/components/flights/FlightCard';
 import { FlightSkeleton } from '@/components/flights/FlightSkeleton';
 import { FilterBar } from '@/components/filters/FilterBar';
 import { CompactSearchEditor } from '@/components/search/CompactSearchEditor';
+import { FilterSortFloating } from '@/components/search/FilterSortFloating';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function SearchPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-surface flex items-center justify-center">Loading...</div>}>
+            <SearchPageContent />
+        </Suspense>
+    );
+}
+
+function SearchPageContent() {
     const searchParams = useSearchParams();
     const [flights, setFlights] = useState<any[]>([]);
     const [dictionaries, setDictionaries] = useState<any>(null);
@@ -86,100 +95,110 @@ export default function SearchPage() {
     });
 
     return (
-        <main className="min-h-screen bg-surface">
+        <main className="min-h-screen bg-surface pb-24 md:pb-0 relative">
+            {/* Background Decor */}
+            <div className="absolute top-0 left-0 right-0 h-[20vh] bg-gradient-to-b from-blue-50/50 to-transparent -z-10" />
+
             {/* Header */}
-            <header className="bg-white border-b border-[#e2e8f0] px-6 py-4 sticky top-0 z-40 shadow-sm">
+            <header className="bg-white/80 backdrop-blur-md border-b border-[#e2e8f0] px-6 py-4 sticky top-0 z-40 shadow-sm transition-all duration-300">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                            <ArrowLeft className="w-5 h-5 text-text-secondary" />
-                            <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 bg-pilot-blue rounded-xl flex items-center justify-center">
-                                    <span className="text-white font-bold text-lg">P</span>
-                                </div>
-                                <span className="text-2xl font-bold text-text-primary">Pilot</span>
-                            </div>
+                        <Link href="/" className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors">
+                            <ArrowLeft className="w-5 h-5 text-text-primary" />
                         </Link>
+
+                        {/* Mobile Summary */}
+                        <div className="md:hidden flex flex-col">
+                            <div className="font-bold text-sm text-text-primary flex items-center gap-2">
+                                {origin} <span className="text-gray-400">→</span> {destination}
+                            </div>
+                            <div className="text-xs text-text-secondary">
+                                {departureDate} • {adults} Adult{Number(adults) > 1 ? 's' : ''}
+                            </div>
+                        </div>
+
+                        {/* Desktop Logo */}
+                        <div className="hidden md:flex items-center gap-2">
+                            <div className="w-8 h-8 bg-pilot-blue rounded-xl flex items-center justify-center">
+                                <span className="text-white font-bold text-lg">P</span>
+                            </div>
+                            <span className="text-2xl font-bold text-text-primary">Pilot</span>
+                        </div>
                     </div>
 
-                    {origin && destination && departureDate && (
-                        <CompactSearchEditor
-                            initialOrigin={origin}
-                            initialDestination={destination}
-                            initialDepartureDate={departureDate}
-                            initialReturnDate={returnDate || undefined}
-                            initialAdults={adults || '1'}
-                        />
-                    )}
+                    {/* Desktop Search Editor */}
+                    <div className="hidden md:block">
+                        {origin && destination && departureDate && (
+                            <CompactSearchEditor
+                                initialOrigin={origin}
+                                initialDestination={destination}
+                                initialDepartureDate={departureDate}
+                                initialReturnDate={returnDate || undefined}
+                                initialAdults={adults || '1'}
+                            />
+                        )}
+                    </div>
                 </div>
             </header>
 
-            <div className="max-w-7xl mx-auto px-6 py-8">
-                {/* Sort Tabs & Filter Bar */}
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8">
+
+                {/* Stats & Sort Bar */}
                 {!isLoading && !error && flights.length > 0 && (
-                    <div className="mb-6 space-y-4">
-                        {/* Sort Tabs */}
-                        <div className="flex p-1.5 bg-white/40 backdrop-blur-md rounded-[2rem] border border-white/40 shadow-sm w-fit gap-1">
-                            <button
-                                onClick={() => setSortBy('cheapest')}
-                                className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all ${sortBy === 'cheapest'
-                                    ? 'bg-pilot-blue text-white shadow-[0_4px_12px_rgba(37,99,235,0.3)]'
-                                    : 'text-text-secondary hover:bg-white/60'
-                                    }`}
-                            >
-                                Cheapest
-                            </button>
-                            <button
-                                onClick={() => setSortBy('fastest')}
-                                className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all ${sortBy === 'fastest'
-                                    ? 'bg-pilot-blue text-white shadow-[0_4px_12px_rgba(37,99,235,0.3)]'
-                                    : 'text-text-secondary hover:bg-white/60'
-                                    }`}
-                            >
-                                Fastest
-                            </button>
-                            <button
-                                onClick={() => setSortBy('best')}
-                                className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all ${sortBy === 'best'
-                                    ? 'bg-pilot-blue text-white shadow-[0_4px_12px_rgba(37,99,235,0.3)]'
-                                    : 'text-text-secondary hover:bg-white/60'
-                                    }`}
-                            >
-                                Best
-                            </button>
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+                        <div>
+                            <h1 className="text-xl md:text-2xl font-bold text-text-primary hidden md:block">Select Flight</h1>
+                            <p className="text-text-secondary text-sm">Found {flights.length} flights</p>
                         </div>
 
-                        {/* Filter Bar */}
-                        <FilterBar />
+                        {/* Desktop Sort Tabs */}
+                        <div className="hidden md:flex p-1 bg-white rounded-full border border-gray-200 shadow-sm">
+                            {['cheapest', 'best', 'fastest'].map((sort) => (
+                                <button
+                                    key={sort}
+                                    onClick={() => setSortBy(sort as any)}
+                                    className={`px-6 py-2 rounded-full text-sm font-bold capitalize transition-all ${sortBy === sort
+                                        ? 'bg-pilot-blue text-white shadow-md'
+                                        : 'text-text-secondary hover:bg-gray-50'
+                                        }`}
+                                >
+                                    {sort}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 )}
 
-                {/* Results */}
+                {/* Results List */}
                 <div className="space-y-4">
                     {isLoading && (
                         <>
-                            {[...Array(6)].map((_, i) => (
+                            {[...Array(4)].map((_, i) => (
                                 <FlightSkeleton key={i} />
                             ))}
                         </>
                     )}
 
                     {error && (
-                        <div className="card-pilot p-12 text-center">
-                            <div className="text-red-500 text-lg font-semibold mb-2">Error</div>
-                            <div className="text-text-secondary">{error}</div>
-                            <Link href="/" className="btn-pilot mt-6 inline-block">
-                                Back to Search
+                        <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-sm">
+                            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span className="text-2xl">⚠️</span>
+                            </div>
+                            <h3 className="text-lg font-bold text-text-primary mb-2">Search Failed</h3>
+                            <p className="text-text-secondary mb-6">{error}</p>
+                            <Link href="/" className="btn-pilot inline-block">
+                                Try Again
                             </Link>
                         </div>
                     )}
 
                     {!isLoading && !error && flights.length === 0 && (
-                        <div className="card-pilot p-12 text-center">
-                            <div className="text-text-primary text-lg font-semibold mb-2">No flights found</div>
-                            <div className="text-text-secondary mb-6">
-                                Try adjusting your search criteria or dates
+                        <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-sm">
+                            <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span className="text-2xl">✈️</span>
                             </div>
+                            <h3 className="text-lg font-bold text-text-primary mb-2">No flights found</h3>
+                            <p className="text-text-secondary mb-6">We couldn't find any flights for your dates.</p>
                             <Link href="/" className="btn-pilot inline-block">
                                 New Search
                             </Link>
@@ -190,14 +209,9 @@ export default function SearchPage() {
                         <FlightCard key={flight.id} offer={flight} dictionaries={dictionaries} />
                     ))}
                 </div>
-
-                {/* Results Count */}
-                {!isLoading && !error && flights.length > 0 && (
-                    <div className="mt-8 text-center text-text-secondary">
-                        Showing {flights.length} flight{flights.length !== 1 ? 's' : ''}
-                    </div>
-                )}
             </div>
+
+            <FilterSortFloating />
         </main>
     );
 }

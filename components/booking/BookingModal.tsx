@@ -90,17 +90,27 @@ export function BookingModal({ isOpen, onClose, flightOffer }: BookingModalProps
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+        <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center md:p-4 overflow-hidden">
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={onClose} />
 
-            <div className="relative bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-                {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-pilot-blue">
-                        <Plane className="w-5 h-5 fill-current rotate-45" />
-                        <span className="font-bold text-lg">Pilot Booking</span>
+            {/* Modal Container */}
+            <div className="relative bg-surface w-full md:max-w-2xl h-[95vh] md:h-auto md:max-h-[85vh] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col md:transition-transform md:duration-300 animate-slide-up">
+
+                {/* SkyFlow Header */}
+                <div className="px-6 py-5 bg-white border-b border-gray-100 flex items-center justify-between shrink-0 rounded-t-3xl text-center md:text-left relative">
+                    <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 flex flex-col items-center md:items-start">
+                        <span className="text-lg font-bold text-text-primary">
+                            {step === 1 && 'Review Flight'}
+                            {step === 2 && 'Passenger Details'}
+                            {step === 3 && 'Confirmation'}
+                        </span>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-surface rounded-full transition-colors">
+
+                    {/* Placeholder for left spacing on mobile to center title */}
+                    <div className="w-8 md:hidden"></div>
+
+                    <button onClick={onClose} className="p-2 bg-gray-50 hover:bg-gray-100 rounded-full transition-colors z-10">
                         <X className="w-5 h-5 text-text-secondary" />
                     </button>
                 </div>
