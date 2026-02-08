@@ -142,12 +142,12 @@ export function SearchFormGoogleStyle() {
     return (
         <div className="w-full max-w-6xl mx-auto px-4 py-8">
             {/* Top Controls - Glassmorphic Pill */}
-            <div className="inline-flex items-center gap-1 mb-6 p-1.5 glass-pill rounded-full transition-all duration-500 hover:soft-shadow">
+            <div className="flex items-center gap-1 mb-6 p-1.5 glass-pill rounded-full transition-all duration-500 hover:soft-shadow overflow-x-auto max-w-full no-scrollbar">
                 {/* Trip Type */}
                 <div className="relative">
                     <button
                         onClick={() => setShowTripTypeDropdown(!showTripTypeDropdown)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-text-primary hover:bg-black/5 rounded-full transition-all duration-300"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-text-primary hover:bg-black/5 rounded-full transition-all duration-300 whitespace-nowrap"
                     >
                         <ArrowLeftRight className="w-4 h-4 text-pilot-blue" />
                         {tripTypeLabels[tripType]}
@@ -272,7 +272,7 @@ export function SearchFormGoogleStyle() {
                 <div className="relative">
                     <button
                         onClick={() => setShowCabinDropdown(!showCabinDropdown)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-text-primary hover:bg-black/5 rounded-full transition-all duration-300"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-text-primary hover:bg-black/5 rounded-full transition-all duration-300 whitespace-nowrap"
                     >
                         {cabinLabels[cabinClass]}
                         <ChevronDown className="w-4 h-4 text-text-secondary opacity-50" />
@@ -305,19 +305,21 @@ export function SearchFormGoogleStyle() {
                     <div className="space-y-4">
                         {flightLegs.map((leg, index) => (
                             <div key={leg.id} className="relative bg-white/60 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm transition-all duration-300 hover:bg-white/80 group">
-                                <div className="flex flex-col md:flex-row items-stretch md:items-center">
+                                <div className="flex flex-col md:flex-row items-center gap-2 p-2">
                                     {/* Origin */}
-                                    <div className="relative flex-1">
+                                    <div className="relative flex-1 w-full">
                                         <AirportAutocompletePro
                                             value={leg.origin}
-                                            onChange={(airport) => updateFlightLeg(leg.id, { origin: airport })}
+                                            onChange={(airport) => {
+                                                updateFlightLeg(leg.id, { origin: airport });
+                                            }}
                                             placeholder="Where from?"
                                             icon="origin"
                                         />
                                     </div>
 
-                                    {/* Swap Button */}
-                                    <div className="flex items-center justify-center px-1">
+                                    {/* Swap Button - Small */}
+                                    <div className="flex items-center justify-center px-1 py-1 md:py-0">
                                         <button
                                             onClick={() => {
                                                 const temp = leg.origin;
@@ -326,7 +328,7 @@ export function SearchFormGoogleStyle() {
                                                     destination: temp,
                                                 });
                                             }}
-                                            className="p-2 hover:bg-black/5 rounded-full transition-all duration-300"
+                                            className="p-2 hover:bg-black/5 rounded-full transition-all duration-300 rotate-90 md:rotate-0"
                                             disabled={!leg.origin || !leg.destination}
                                         >
                                             <ArrowLeftRight className="w-4 h-4 text-text-secondary opacity-50 group-hover:opacity-100" />
@@ -334,7 +336,7 @@ export function SearchFormGoogleStyle() {
                                     </div>
 
                                     {/* Destination */}
-                                    <div className="relative flex-1">
+                                    <div className="relative flex-1 w-full">
                                         <AirportAutocompletePro
                                             value={leg.destination}
                                             onChange={(airport) => {
@@ -351,16 +353,16 @@ export function SearchFormGoogleStyle() {
                                     </div>
 
                                     {/* Date */}
-                                    <div className="relative w-full md:w-48 bg-black/5 md:bg-transparent p-4 flex items-center gap-3">
+                                    <div className="relative w-full md:w-48 bg-black/5 md:bg-transparent p-4 flex items-center gap-3 mt-2 md:mt-0 rounded-xl md:rounded-none">
                                         <CalendarIcon className="w-5 h-5 text-pilot-blue" />
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col w-full">
                                             <span className="text-[10px] font-bold text-text-secondary uppercase tracking-tighter">Departure</span>
                                             <input
                                                 type="date"
                                                 value={leg.date}
                                                 onChange={(e) => updateFlightLeg(leg.id, { date: e.target.value })}
                                                 min={today}
-                                                className="text-sm font-bold text-text-primary focus:outline-none bg-transparent cursor-pointer"
+                                                className="text-sm font-bold text-text-primary focus:outline-none bg-transparent cursor-pointer w-full"
                                             />
                                         </div>
                                     </div>
@@ -406,10 +408,10 @@ export function SearchFormGoogleStyle() {
                             </div>
 
                             {/* Swap Button */}
-                            <div className="relative h-0 md:h-auto w-full md:w-auto flex justify-center z-10">
+                            <div className="relative h-12 md:h-auto w-full md:w-auto flex justify-center items-center z-10 -my-3 md:my-0">
                                 <button
                                     onClick={handleSwap}
-                                    className="p-3 bg-white hover:bg-gray-50 rounded-full shadow-lg border border-gray-100 transition-all duration-300 md:-mx-4 group hover:scale-110 active:scale-95"
+                                    className="p-3 bg-white hover:bg-gray-50 rounded-full shadow-lg border border-gray-100 transition-all duration-300 md:-mx-4 group hover:scale-110 active:scale-95 rotate-90 md:rotate-0"
                                     disabled={!origin || !destination}
                                 >
                                     <ArrowLeftRight className="w-5 h-5 text-pilot-blue transition-transform group-hover:rotate-180" />
@@ -427,17 +429,17 @@ export function SearchFormGoogleStyle() {
                             </div>
 
                             {/* Departure Date */}
-                            <div className="relative flex-1 w-full">
+                            <div className="relative flex-1 w-full border-t md:border-t-0 md:border-l border-gray-100">
                                 <div className="p-4 flex items-center gap-3">
                                     <CalendarIcon className="w-5 h-5 text-pilot-blue" />
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col w-full">
                                         <span className="text-[10px] font-bold text-text-secondary uppercase tracking-tighter">Departure</span>
                                         <input
                                             type="date"
                                             value={departureDate}
                                             onChange={(e) => setDepartureDate(e.target.value)}
                                             min={today}
-                                            className="text-sm font-bold text-text-primary focus:outline-none bg-transparent cursor-pointer"
+                                            className="text-sm font-bold text-text-primary focus:outline-none bg-transparent cursor-pointer w-full"
                                         />
                                     </div>
                                 </div>
@@ -448,14 +450,14 @@ export function SearchFormGoogleStyle() {
                                 <div className="relative flex-1 w-full border-t md:border-t-0 md:border-l border-gray-100">
                                     <div className="p-4 flex items-center gap-3">
                                         <CalendarIcon className="w-5 h-5 text-pilot-blue" />
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col w-full">
                                             <span className="text-[10px] font-bold text-text-secondary uppercase tracking-tighter">Return</span>
                                             <input
                                                 type="date"
                                                 value={returnDate}
                                                 onChange={(e) => setReturnDate(e.target.value)}
                                                 min={departureDate || today}
-                                                className="text-sm font-bold text-text-primary focus:outline-none bg-transparent cursor-pointer"
+                                                className="text-sm font-bold text-text-primary focus:outline-none bg-transparent cursor-pointer w-full"
                                             />
                                         </div>
                                     </div>

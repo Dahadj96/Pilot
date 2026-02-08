@@ -1,31 +1,11 @@
 import { SearchFormGoogleStyle } from "@/components/search/SearchFormGoogleStyle";
+import { Header } from "@/components/layout/Header";
 
 export default function HomePage() {
     return (
         <main className="min-h-screen bg-gradient-to-br from-surface via-white to-surface">
             {/* Header */}
-            <header className="px-6 py-4">
-                <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-pilot-blue rounded-xl flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">P</span>
-                        </div>
-                        <span className="text-2xl font-bold text-text-primary">Pilot</span>
-                    </div>
-
-                    <nav className="flex items-center gap-6">
-                        <button className="text-text-secondary hover:text-text-primary transition-colors">
-                            Flights
-                        </button>
-                        <button className="text-text-secondary hover:text-text-primary transition-colors">
-                            My Trips
-                        </button>
-                        <button className="btn-pilot-outline text-sm">
-                            Sign In
-                        </button>
-                    </nav>
-                </div>
-            </header>
+            <Header />
 
             {/* Hero Section */}
             <section className="px-6 py-20">

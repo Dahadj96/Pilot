@@ -148,10 +148,10 @@ export function FlightCard({ offer, dictionaries }: FlightCardProps) {
                 </div>
             )}
 
-            <div className="flex items-center justify-between gap-6">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
                 {/* Airline Info with Logo */}
-                <div className="flex items-center gap-4 min-w-[200px]">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-gray-200 overflow-hidden">
+                <div className="flex items-center gap-4 w-full md:w-auto md:min-w-[200px]">
+                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-gray-200 overflow-hidden shrink-0">
                         {logoUrl ? (
                             <img
                                 src={logoUrl}
@@ -175,7 +175,7 @@ export function FlightCard({ offer, dictionaries }: FlightCardProps) {
                 </div>
 
                 {/* Flight Timeline */}
-                <div className="flex-1">
+                <div className="flex-1 w-full md:w-auto py-4 md:py-0 border-y md:border-y-0 border-dashed border-gray-200 md:border-none">
                     <div className="flex items-center justify-between">
                         {/* Departure */}
                         <div className="text-center">
@@ -188,10 +188,10 @@ export function FlightCard({ offer, dictionaries }: FlightCardProps) {
                         </div>
 
                         {/* Duration & Stops */}
-                        <div className="flex-1 mx-6">
+                        <div className="flex-1 mx-4 md:mx-6">
                             <div className="relative">
                                 <div className="h-0.5 bg-pilot-blue/20 w-full" />
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3">
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 md:px-3">
                                     <div className="flex items-center gap-2 text-xs text-text-secondary whitespace-nowrap">
                                         <Clock className="w-3 h-3" />
                                         {formatDuration(firstItinerary.duration)}
@@ -217,32 +217,36 @@ export function FlightCard({ offer, dictionaries }: FlightCardProps) {
                     </div>
 
                     {/* Cabin Class & Baggage Badges */}
-                    <div className="flex items-center gap-2 mt-3 justify-center">
+                    <div className="flex flex-wrap items-center gap-2 mt-3 justify-center">
                         <span className={`text-xs px-3 py-1 rounded-full border ${getCabinBadgeColor(cabinClass)}`}>
                             {formatCabinClass(cabinClass)}
                         </span>
                         {checkedBags > 0 && (
                             <span className="text-xs px-3 py-1 rounded-full border bg-green-50 text-green-800 border-green-200 flex items-center gap-1">
                                 <Luggage className="w-3 h-3" />
-                                {checkedBags} bag{checkedBags > 1 ? 's' : ''}
+                                <span className="hidden sm:inline">{checkedBags} bag{checkedBags > 1 ? 's' : ''}</span>
+                                <span className="sm:hidden">{checkedBags}</span>
                             </span>
                         )}
                         {offer.numberOfBookableSeats && offer.numberOfBookableSeats < 9 && (
                             <span className="text-xs px-3 py-1 rounded-full border bg-orange-50 text-orange-800 border-orange-200">
-                                {offer.numberOfBookableSeats} seats left
+                                {offer.numberOfBookableSeats} left
                             </span>
                         )}
                     </div>
                 </div>
 
                 {/* Price & Select */}
-                <div className="text-right min-w-[200px]">
-                    <div className="text-3xl font-bold text-pilot-blue mb-3">
-                        {offer.price.formattedDZD}
+                <div className="md:text-right w-full md:w-auto md:min-w-[200px] flex flex-col items-stretch md:block">
+                    <div className="flex md:block items-center justify-between mb-3 md:mb-3">
+                        <span className="md:hidden text-text-secondary font-medium">Total Price:</span>
+                        <div className="text-3xl font-bold text-pilot-blue">
+                            {offer.price.formattedDZD}
+                        </div>
                     </div>
                     <button
                         onClick={() => setIsBookingModalOpen(true)}
-                        className="btn-pilot text-sm px-6 py-2 w-full mb-2"
+                        className="btn-pilot text-sm px-6 py-2 w-full mb-2 order-2 md:order-1"
                     >
                         Select Flight
                     </button>
@@ -250,14 +254,14 @@ export function FlightCard({ offer, dictionaries }: FlightCardProps) {
                         <button
                             onClick={showSeatInfo}
                             disabled={seatAvailability !== null}
-                            className="text-xs px-4 py-2 rounded-lg border border-pilot-blue text-pilot-blue hover:bg-pilot-blue/5 disabled:opacity-50 disabled:cursor-not-allowed w-full mb-2 transition-colors"
+                            className="text-xs px-4 py-2 rounded-lg border border-pilot-blue text-pilot-blue hover:bg-pilot-blue/5 disabled:opacity-50 disabled:cursor-not-allowed w-full mb-2 transition-colors order-3 md:order-2"
                         >
                             {seatAvailability ? 'Seat Info Shown ✓' : 'View Seat Information'}
                         </button>
                     )}
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className="text-xs text-pilot-blue hover:underline flex items-center gap-1 mx-auto"
+                        className="text-xs text-pilot-blue hover:underline flex items-center justify-center md:justify-end gap-1 mx-auto md:mx-0 order-1 md:order-3 mb-4 md:mb-0"
                     >
                         {isExpanded ? (
                             <>Hide details <ChevronUp className="w-3 h-3" /></>
