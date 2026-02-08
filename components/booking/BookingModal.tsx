@@ -126,7 +126,7 @@ export function BookingModal({ isOpen, onClose, flightOffer }: BookingModalProps
                         <div className="space-y-6">
                             <div className="bg-blue-50/50 rounded-2xl p-6 border border-blue-100">
                                 <h2 className="text-xl font-bold text-text-primary mb-2">Final Price Review</h2>
-                                <p className="text-text-secondary text-sm mb-4">We're verifying the latest pricing and availability with the airline. This takes just a moment.</p>
+                                <p className="text-text-secondary text-sm mb-4">We&apos;re verifying the latest pricing and availability with the airline. This takes just a moment.</p>
                                 <div className="flex items-center justify-between py-4 border-t border-blue-100">
                                     <span className="text-text-primary font-medium">Total Amount</span>
                                     <span className="text-2xl font-bold text-pilot-blue">{flightOffer.price.formattedDZD}</span>

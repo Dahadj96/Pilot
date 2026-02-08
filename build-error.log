@@ -1,0 +1,58 @@
+﻿
+> pilot@1.0.0 build
+> next build
+
+node.exe :  ΓÜá Warning: Next.js inferred your workspace 
+root, but it may not be correct.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\ABDOU 
+PC\AppData\Roami ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ( ΓÜá Warning:  
+   N...not be correct.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ We detected multiple lockfiles and selected the directory 
+of C:\Users\ABDOU PC\package-lock.json as the root 
+directory.
+ To silence this warning, set `outputFileTracingRoot` in 
+your Next.js config, or consider removing one of the 
+lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next
+-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * C:\Users\ABDOU PC\Desktop\pilot\package-lock.json
+
+   Γû▓ Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully in 3.2s
+   Linting and checking validity of types ...
+
+Failed to compile.
+
+./components/booking/BookingModal.tsx
+129:83  Error: `'` can be escaped with `&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./components/flights/FlightCard.tsx
+156:29  Warning: Using `<img>` could result in slower LCP 
+and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically 
+optimize images. This may incur additional usage or cost 
+from your provider. See: 
+https://nextjs.org/docs/messages/no-img-element  
+@next/next/no-img-element
+323:53  Warning: Using `<img>` could result in slower LCP 
+and higher bandwidth. Consider using `<Image />` from 
+`next/image` or a custom image loader to automatically 
+optimize images. This may incur additional usage or cost 
+from your provider. See: 
+https://nextjs.org/docs/messages/no-img-element  
+@next/next/no-img-element
+
+info  - Need to disable some ESLint rules? Learn more here: 
+https://nextjs.org/docs/app/api-reference/config/eslint#disa
+bling-rules

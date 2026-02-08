@@ -1,0 +1,23 @@
+'use client';
+
+import { Suspense } from 'react';
+import SearchPageContent from './SearchPageContent';
+import { FlightSkeleton } from '@/components/flights/FlightSkeleton';
+
+export default function SearchPage() {
+    return (
+        <Suspense fallback={
+            <main className="min-h-screen bg-surface">
+                <div className="max-w-7xl mx-auto px-6 py-8">
+                    <div className="space-y-4">
+                        {[...Array(6)].map((_, i) => (
+                            <FlightSkeleton key={i} />
+                        ))}
+                    </div>
+                </div>
+            </main>
+        }>
+            <SearchPageContent />
+        </Suspense>
+    );
+}
